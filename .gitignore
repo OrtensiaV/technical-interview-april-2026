@@ -1,0 +1,21 @@
+# R specific
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# Package specific
+*.tar.gz
+*.zip
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+.Rdata
+.httr-oauth
+.quarto

@@ -2,7 +2,7 @@
 # Question 4: TLG - Adverse Event Reporting (Script 1)
 # ============================================================================
 #
-# Creat a summary table of treatment-emergent adverse events (TEAEs)
+# Create a summary table of treatment-emergent adverse events (TEAEs)
 #
 # Author: Ortensia Vito
 # ============================================================================

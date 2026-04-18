@@ -32,5 +32,5 @@ tbl_aesoc <- adae %>%
     label = "..ard_hierarchical_overall.." ~ "Any SAE"
   ) %>%
   as_gt() %>% 
-  gt::gtsave(filename = "tbl_aesoc.html")
+  gt::gtsave(filename = "ae_summary_table.html")
 

@@ -121,7 +121,7 @@ ds <- ds %>%
     DSDECOD = toupper(DSDECOD),
     DSCAT = toupper(DSCAT),
     VISITNUM = VISITNUM,
-    VISIT = VISIT,
+    VISIT = toupper(VISIT),
     DSDTCOL = as.character(ds_raw$DSDTCOL),
     DSTMCOL = as.character(ds_raw$DSTMCOL),
     # Combine date and time into ISO8601 format

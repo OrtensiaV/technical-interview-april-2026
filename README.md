@@ -56,9 +56,54 @@ See `question_1/descriptive_stats/README.md` for detailed documentation.
 
 ## Question 2: SDTM DS Domain Creation
 
-**Location**: `question_2/`
+**Location**: `question_2_stdm/02_create_ds_domain.R`
 
-Implementation of SDTM Disposition (DS) domain using `sdtm.oak` from Pharmaverse.
+### Objective
+
+Create an SDTM Disposition (DS) domain dataset from raw clinical trial data using the `{sdtm.oak}` package.
+
+### Approach
+
+The DS domain captures subject disposition events throughout the clinical trial, including protocol milestones (e.g., randomisation) and disposition events (e.g., completion, withdrawal). The implementation follows CDISC SDTM standards and applies conditional logic based on aCRF specifications.
+
+### Key Features
+
+- **Conditional Mapping Logic**: Implements business rules for DSTERM, DSDECOD, and DSCAT based on the presence of other specifications (OTHERSP)
+- **Controlled Terminology**: Applies CT mappings for visit variables (VISIT, VISITNUM) using the study CT specification
+- **Date Handling**: Converts raw dates and times to ISO8601 format, combining date of collection (DSDTCOL) and time of collection (DSTMCOL) into DSDTC
+- **Study Day Derivation**: Calculates DSSTDY relative to the reference start date from the DM domain
+- **Sequence Generation**: Derives DSSEQ per subject based on USUBJID and DSTERM
+
+### Implementation Details
+
+The script utilises `{sdtm.oak}` functions including:
+
+- `assign_no_ct()`: Direct variable assignments without controlled terminology
+- `assign_ct()`: Variable assignments with controlled terminology mappings
+- `hardcode_no_ct()`: Hardcoded value assignments for categorical variables
+- `condition_add()`: Conditional filtering of raw data based on business rules
+- `derive_seq()`: Sequence number derivation
+- `derive_study_day()`: Study day calculation relative to reference dates
+
+### Business Rules Applied
+
+1. When OTHERSP is null, map IT.DSTERM to DSTERM and IT.DSDECOD to DSDECOD
+2. When OTHERSP is not null, map OTHERSP to both DSTERM and DSDECOD
+3. When IT.DSDECOD equals "Randomized", assign DSCAT as "PROTOCOL MILESTONE"
+4. When IT.DSDECOD does not equal "Randomized" and OTHERSP is null, assign DSCAT as "DISPOSITION EVENT"
+5. When OTHERSP is not null, assign DSCAT as "OTHER EVENT"
+
+### Output Variables
+
+The final DS domain contains the following SDTM variables:
+
+STUDYID, DOMAIN, USUBJID, DSSEQ, DSTERM, DSDECOD, DSCAT, VISITNUM, VISIT, DSDTC, DSSTDTC, DSSTDY
+
+### Data Sources
+
+- **Raw Data**: `pharmaverseraw::ds_raw`
+- **Reference Domain**: `pharmaversesdtm::dm` (for study day derivation)
+- **Controlled Terminology**: `"raw_data/sdtm_ct.csv"` from `{sdtm.oak}` package
 
 ## Question 3: ADaM ADSL Dataset Creation
 

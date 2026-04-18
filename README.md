@@ -23,6 +23,9 @@ This repository contains solutions to six technical questions spanning:
 ├── question_6/    # GenAI Clinical Data Assistant (LangChain)
 └── README.md
 ```
+## Author
+
+Ortensia Vito
 
 ## Question 1: Descriptive Statistics R Package
 
@@ -107,9 +110,87 @@ STUDYID, DOMAIN, USUBJID, DSSEQ, DSTERM, DSDECOD, DSCAT, VISITNUM, VISIT, DSDTC,
 
 ## Question 3: ADaM ADSL Dataset Creation
 
-**Location**: `question_3/`
+**Location**: `question_3_adam/create_adsl.R`
 
 Creation of Analysis Data Model (ADaM) Subject-Level Analysis Dataset (ADSL).
+
+## Overview
+
+This project creates an Analysis Dataset Subject Level (ADSL) from SDTM source data using the {admiral} family of packages and tidyverse tools, following Pharmaverse standards and CDISC ADaM guidelines.
+
+## Purpose
+
+The ADSL dataset contains one record per subject with key demographic, treatment, and derived variables used across multiple analyses.
+
+## Data Sources
+
+The programme uses the following SDTM domains from the `pharmaversesdtm` package:
+
+- **DM** (Demographics): Base dataset for subject-level information
+- **EX** (Exposure): Treatment administration records
+- **VS** (Vital Signs): Blood pressure measurements
+- **AE** (Adverse Events): Adverse event records
+- **DS** (Disposition): Study disposition events
+
+## Key Derived Variables
+
+### AGEGR9 & AGEGR9N
+Age grouping variables categorising subjects into:
+- `"<18"` 
+- `"18-50"`
+- `">50"` 
+
+AGEGR9N provides numeric equivalents (1, 2, 3).
+
+### TRTSDTM & TRTSTMF
+Treatment start date-time derived from the first valid exposure record. Missing time components are imputed to 00:00:00 for hours and minutes (but not seconds). The imputation flag (TRTSTMF) indicates which time components were imputed.
+
+**Valid dose criteria**: EXDOSE > 0 OR (EXDOSE = 0 AND EXTRT contains "PLACEBO")
+
+### TRTEDTM & TRTETMF
+Treatment end date-time derived from the last valid exposure record, with similar imputation logic to TRTSDTM.
+
+### ITTFL
+Intent-to-Treat Flag indicating whether a subject was randomised:
+- `"Y"`: Subject has a populated ARM value
+- `"N"`: Subject was not randomised
+
+### ABNSBPFL
+Abnormal Systolic Blood Pressure Flag identifying subjects with any systolic BP measurement <100 or ≥140 mmHg:
+- `"Y"`: At least one abnormal measurement
+- `"N"`: All measurements within normal range
+
+### LSTALVDT
+Last Known Alive Date representing the maximum date across four sources:
+1. Last vital signs assessment with valid results
+2. Last adverse event onset date
+3. Last disposition event date
+4. Last treatment administration date
+
+Only complete dates (no imputation) are included in this derivation.
+
+### CARPOPFL
+Cardiac Population Flag identifying subjects with cardiac adverse events:
+- `"Y"`: Subject has at least one AE in "CARDIAC DISORDERS" system organ class
+- `NA`: No cardiac adverse events
+
+## Technical Implementation and Execution
+
+Run the main script:
+
+```r
+source("adsl_creation.R")
+```
+
+The script will:
+1. Load and prepare SDTM source datasets
+2. Derive all required ADSL variables
+3. Output the final ADSL dataset
+
+## Output
+
+The final ADSL dataset contains all standard DM variables plus the derived variables listed above, ready for use in downstream analysis datasets and statistical analyses.
+
 
 ## Question 4: TLG - Adverse Events Reporting
 
@@ -155,10 +236,6 @@ LLM-powered assistant for clinical data queries using LangChain.
 - [ ] Question 4: Adverse Events TLG
 - [ ] Question 5: Clinical Data API
 - [ ] Question 6: GenAI Assistant
-
-## Author
-
-Ortensia Vito
 
 ## Licence
 

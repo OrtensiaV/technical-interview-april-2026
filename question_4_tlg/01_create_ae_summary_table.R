@@ -20,7 +20,8 @@ adsl <- pharmaverseadam::adsl
 # Filter for treatment-emergent adverse events
 adae <- adae %>%
   filter(TRTEMFL == "Y")
-           
+
+# Create the summary table and save .html file           
 tbl_aesoc <- adae %>%
   tbl_hierarchical(
     variables = c(AESOC, AEDECOD),

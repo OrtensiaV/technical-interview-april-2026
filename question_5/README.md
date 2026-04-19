@@ -1,99 +1,87 @@
 # Clinical Trial Data API
 
-A RESTful API built with FastAPI for querying and analysing clinical trial adverse event data.
+A REST API for querying and analysing adverse event data from clinical trials, built with FastAPI.
 
-## Features
+## What It Does
 
-- Dynamic filtering of adverse events by severity and treatment arm
-- Patient risk score calculation based on adverse event severity
-- RESTful API design with comprehensive error handling
+The API lets you filter adverse events by severity and treatment group, and calculate safety risk scores for individual patients. It is designed to be simple to use whilst handling errors properly.
 
-## Project Files
+## The Files
 
-### main.py
-Production-ready FastAPI application containing:
-  - Complete API implementation
-- All three endpoints (welcome, query, risk calculation)
-- Data loading with fallback to GitHub
-- Full documentation and error handling
+**main.py** contains the actual API - this is what you run.
 
-**Usage**: Run this file to start the API server.
+**dev_test_code.py** has all the test cases I used during development. You can run it to verify everything works, but it is not required for the API itself.
 
-### dev_test_code.py
-Development and testing suite containing:
-  - Comprehensive test cases for all endpoints
-- Data validation tests
-- Edge case handling verification
-- Example usage patterns
+## What You'll Need
 
-**Usage**: Run this file to verify all functionality works correctly before deployment.
+- Python 3.8 or newer
+- A few Python packages (FastAPI, Uvicorn, Pandas, Pydantic)
 
-## Requirements
+## Getting Set Up
 
-- Python 3.8+
-  - FastAPI
-- Uvicorn
-- Pandas
-- Pydantic
+### Clone and Navigate
 
-## Installation
-
-1. Clone the repository:
-  ```bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+```bash
+git clone https://github.com/OrtensiaV/technical-interview-april-2026/
+cd technical-interview-april-2026/question_5
 ```
 
-2. Install dependencies:
-  ```bash
+### Install Dependencies
+
+```bash
 pip install fastapi uvicorn pandas pydantic
 ```
 
-3. Ensure `adae.csv` is in the project directory or update the file path in `main.py`.
+### Check You Have Everything
 
-## Running the API Locally
+Make sure these files are in the folder:
+- `main.py`
+- `adae.csv`
 
-Start the API server using uvicorn:
+## Running It
+
+Start the server from the `exercise5` folder:
   
   ```bash
 uvicorn main:app --reload
 ```
 
-The API will be available at `http://localhost:8000`
-
-- Interactive API documentation: `http://localhost:8000/docs`
-- Alternative documentation: `http://localhost:8000/redoc`
-
-## Testing
-
-Run the comprehensive test suite:
-  
-  ```bash
-python dev_test_code.py
+You should see something like:
+  ```
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process
+INFO:     Application startup complete.
 ```
 
-This will execute all test cases and display results for:
-  - Welcome endpoint functionality
-- Dynamic filtering with various parameter combinations
-- Risk score calculations for multiple subjects
-- Error handling for invalid inputs
+The `--reload` flag is handy during development - it automatically restarts the server when you save changes.
 
-## API Endpoints
+To stop the server, just press `CTRL+C` in the terminal.
 
-### 1. GET `/`
-Returns a welcome message confirming the API is running.
+## Using the API
 
-**Response:**
-  ```json
+### Interactive Documentation (Easiest Way)
+
+Go to **`http://localhost:8000/docs`** in your browser. You'll see all three endpoints with "Try it out" buttons. Click one, enter your parameters, hit "Execute", and you'll see the response immediately.
+
+There's also an alternative documentation view at **`http://localhost:8000/redoc`**.
+
+### The Endpoints
+
+**1. GET `/`**
+
+Just returns a welcome message to confirm the API is running.
+
+```json
 {
   "message": "Clinical Trial Data API is running"
 }
 ```
 
-### 2. POST `/ae-query`
-Filter adverse events dynamically based on severity and/or treatment arm.
+**2. POST `/ae-query`**
 
-**Request Body:**
+Filter adverse events by severity and/or treatment arm. Both parameters are optional - if you leave one out, it won't filter on that dimension.
+
+Example request:
   ```json
 {
   "severity": ["MILD", "MODERATE"],
@@ -101,7 +89,7 @@ Filter adverse events dynamically based on severity and/or treatment arm.
 }
 ```
 
-**Response:**
+Response:
   ```json
 {
   "count": 145,
@@ -109,20 +97,21 @@ Filter adverse events dynamically based on severity and/or treatment arm.
 }
 ```
 
-**Notes:**
-  - Both fields are optional
-- If a field is omitted, no filter is applied for that dimension
-- `severity` accepts a list of values: "MILD", "MODERATE", "SEVERE"
+**3. GET `/subject-risk/{subject_id}`**
+  
+  Calculate a safety risk score for a specific patient based on their adverse events.
 
-### 3. GET `/subject-risk/{subject_id}`
-Calculate safety risk score for a specific patient.
+The scoring works like this:
+- MILD events: 1 point each
+- MODERATE events: 3 points each
+- SEVERE events: 5 points each
 
-**Example Request:**
-  ```
-GET /subject-risk/01-701-1015
-```
+Then it categorises the total:
+- Low risk: under 5 points
+- Medium risk: 5 to 14 points
+- High risk: 15 points or more
 
-**Response:**
+Example response:
   ```json
 {
   "subject_id": "01-701-1015",
@@ -131,55 +120,37 @@ GET /subject-risk/01-701-1015
 }
 ```
 
-**Risk Scoring:**
-  - MILD: 1 point
-- MODERATE: 3 points
-- SEVERE: 5 points
+If you request a subject ID that doesn't exist, you'll get a 404 error with a helpful message.
 
-**Risk Categories:**
-  - Low: Score < 5
-- Medium: 5 ≤ Score < 15
-- High: Score ≥ 15
+## Testing
 
-**Error Response (404):**
-  ```json
-{
-  "detail": "Subject ID 'INVALID-ID' not found in the dataset"
-}
-```
+### Using the Interactive Docs
 
-## Development Workflow
+This is the simplest way - just go to `http://localhost:8000/docs`, click on an endpoint, hit "Try it out", enter your parameters, and click "Execute". You'll see the response straight away.
 
-1. **Make changes** to `main.py`
-2. **Add corresponding tests** to `dev_test_code.py`
-3. **Run tests** to verify functionality: `python dev_test_code.py`
-4. **Start the server** to test interactively: `uvicorn main:app --reload`
-5. **Use Swagger UI** at `http://localhost:8000/docs` for manual testing
+### Using the Test Script
 
-## Additional Testing Methods
+Run all the test cases at once:
 
-### Using cURL
 ```bash
-curl -X POST "http://localhost:8000/ae-query" \
--H "Content-Type: application/json" \
--d '{"severity": ["MILD"], "treatment_arm": "Placebo"}'
+python dev_test_code.py
 ```
 
-### Using Python requests
-```python
-import requests
-response = requests.post(
-  "http://localhost:8000/ae-query",
-  json={"severity": ["MILD", "MODERATE"]}
-)
-print(response.json())
-```
+## Common Issues
+
+**"Can't find module fastapi"**
+You need to install the dependencies: `pip install fastapi uvicorn pandas pydantic`
+
+**"Can't find adae.csv"**
+Make sure `adae.csv` is in the same folder as `main.py`
+
+**"Port 8000 is already in use"**
+Either something else is using that port, or you've already got the API running. Try a different port: `uvicorn main:app --reload --port 8001`
+
+**"My code changes aren't showing up"**
+  Make sure you saved the file and you're using the `--reload` flag when starting the server.
 
 ## Author
 
 Ortensia Vito
-
-## Licence
-
-MIT
 ```

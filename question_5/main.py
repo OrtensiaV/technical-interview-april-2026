@@ -9,10 +9,6 @@ from pydantic import BaseModel
 from typing import Optional, List
 import uvicorn
 
-# ============================================================================
-# DATA LOADING
-# ============================================================================
-
 # Load dataset (update path as needed for local vs GitHub deployment)
 try:
     # For local execution
@@ -23,19 +19,15 @@ except FileNotFoundError:
     github_url = "https://raw.githubusercontent.com/your-username/your-repo/main/adae.csv"
     df = pd.read_csv(github_url)
     print(f"Dataset loaded from GitHub: {len(df)} records")
-
-# ============================================================================
-# PYDANTIC MODELS
-# ============================================================================
+    
+# Pydantic models
 
 class AEQueryRequest(BaseModel):
     """Request model for adverse event filtering"""
     severity: Optional[List[str]] = None
     treatment_arm: Optional[str] = None
 
-# ============================================================================
-# FASTAPI APPLICATION
-# ============================================================================
+# FastAPI application
 
 app = FastAPI(
     title="Clinical Trial Data API",
@@ -43,9 +35,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# ============================================================================
-# ENDPOINTS
-# ============================================================================
+# Endpoints
 
 @app.get("/")
 def read_root():
@@ -144,9 +134,7 @@ def get_subject_risk(subject_id: str):
         "risk_category": risk_category
     }
 
-# ============================================================================
-# SERVER STARTUP
-# ============================================================================
+# Server startup
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)

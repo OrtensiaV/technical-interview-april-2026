@@ -21,14 +21,12 @@ except FileNotFoundError:
     print(f"Dataset loaded from GitHub: {len(df)} records")
     
 # Pydantic models
-
 class AEQueryRequest(BaseModel):
     """Request model for adverse event filtering"""
     severity: Optional[List[str]] = None
     treatment_arm: Optional[str] = None
 
 # FastAPI application
-
 app = FastAPI(
     title="Clinical Trial Data API",
     description="API for querying and analysing clinical trial adverse event data",
@@ -36,7 +34,6 @@ app = FastAPI(
 )
 
 # Endpoints
-
 @app.get("/")
 def read_root():
     """Welcome endpoint"""
@@ -135,6 +132,5 @@ def get_subject_risk(subject_id: str):
     }
 
 # Server startup
-
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)

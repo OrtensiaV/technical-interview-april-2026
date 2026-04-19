@@ -8,6 +8,26 @@ A RESTful API built with FastAPI for querying and analysing clinical trial adver
 - Patient risk score calculation based on adverse event severity
 - RESTful API design with comprehensive error handling
 
+## Project Files
+
+### main.py
+Production-ready FastAPI application containing:
+  - Complete API implementation
+- All three endpoints (welcome, query, risk calculation)
+- Data loading with fallback to GitHub
+- Full documentation and error handling
+
+**Usage**: Run this file to start the API server.
+
+### dev_test_code.py
+Development and testing suite containing:
+  - Comprehensive test cases for all endpoints
+- Data validation tests
+- Edge case handling verification
+- Example usage patterns
+
+**Usage**: Run this file to verify all functionality works correctly before deployment.
+
 ## Requirements
 
 - Python 3.8+
@@ -29,7 +49,7 @@ cd your-repo
 pip install fastapi uvicorn pandas pydantic
 ```
 
-3. Ensure `adae.csv` is in the project directory or update the file path in the script.
+3. Ensure `adae.csv` is in the project directory or update the file path in `main.py`.
 
 ## Running the API Locally
 
@@ -43,6 +63,20 @@ The API will be available at `http://localhost:8000`
 
 - Interactive API documentation: `http://localhost:8000/docs`
 - Alternative documentation: `http://localhost:8000/redoc`
+
+## Testing
+
+Run the comprehensive test suite:
+  
+  ```bash
+python dev_test_code.py
+```
+
+This will execute all test cases and display results for:
+  - Welcome endpoint functionality
+- Dynamic filtering with various parameter combinations
+- Risk score calculations for multiple subjects
+- Error handling for invalid inputs
 
 ## API Endpoints
 
@@ -114,34 +148,31 @@ GET /subject-risk/01-701-1015
 }
 ```
 
-## Testing
+## Development Workflow
 
-You can test the API using:
-  
-  1. **Interactive Docs**: Navigate to `http://localhost:8000/docs`
-2. **cURL**:
-  ```bash
+1. **Make changes** to `main.py`
+2. **Add corresponding tests** to `dev_test_code.py`
+3. **Run tests** to verify functionality: `python dev_test_code.py`
+4. **Start the server** to test interactively: `uvicorn main:app --reload`
+5. **Use Swagger UI** at `http://localhost:8000/docs` for manual testing
+
+## Additional Testing Methods
+
+### Using cURL
+```bash
 curl -X POST "http://localhost:8000/ae-query" \
 -H "Content-Type: application/json" \
 -d '{"severity": ["MILD"], "treatment_arm": "Placebo"}'
 ```
-3. **Python requests**:
-  ```python
+
+### Using Python requests
+```python
 import requests
 response = requests.post(
   "http://localhost:8000/ae-query",
   json={"severity": ["MILD", "MODERATE"]}
 )
 print(response.json())
-```
-
-## Project Structure
-
-```
-.
-├── main.py              # FastAPI application
-├── adae.csv            # Clinical trial adverse event data
-└── README.md           # This file
 ```
 
 ## Author
@@ -151,3 +182,4 @@ Ortensia Vito
 ## Licence
 
 MIT
+```

@@ -11,10 +11,6 @@ from typing import Optional, List
 # Import the app and models from main (if testing separately)
 # from main import app, AEQueryRequest, read_root, query_adverse_events, get_subject_risk
 
-# ============================================================================
-# DATA LOADING FOR TESTING
-# ============================================================================
-
 # Load dataset from GitHub for testing
 github_url = "https://raw.githubusercontent.com/your-username/your-repo/main/adae.csv"
 
@@ -26,19 +22,13 @@ except Exception as e:
     print(f"Error loading dataset: {e}")
     df = pd.DataFrame()
 
-# ============================================================================
-# PYDANTIC MODELS (for standalone testing)
-# ============================================================================
-
+# Pydantic models (for standalone testing)
 class AEQueryRequest(BaseModel):
     """Request model for adverse event filtering"""
     severity: Optional[List[str]] = None
     treatment_arm: Optional[str] = None
 
-# ============================================================================
-# ENDPOINT FUNCTIONS (copied for standalone testing)
-# ============================================================================
-
+# Endpoint functions (copied for standalone testing)
 def read_root():
     """Welcome endpoint"""
     return {"message": "Clinical Trial Data API is running"}
@@ -91,19 +81,14 @@ def get_subject_risk(subject_id: str):
         "risk_category": risk_category
     }
 
-# ============================================================================
-# TEST CASES
-# ============================================================================
-
-print("\n" + "="*70)
-print("TESTING ENDPOINT 1: GET /")
-print("="*70)
+# Test cases
+print("\n")
+print("Testing endpoint 1: GET /")
 result = read_root()
 print(f"Result: {result}")
 
-print("\n" + "="*70)
-print("TESTING ENDPOINT 2: POST /ae-query")
-print("="*70)
+print("\n")
+print("Testing endpoint 2: POST /ae-query")
 
 # Test Case 1: Filter by severity and treatment arm
 print("\nTest 1: Severity=['MILD', 'MODERATE'] and Treatment='Placebo'")
@@ -137,9 +122,8 @@ result_4 = query_adverse_events(test_request_4)
 print(f"Count: {result_4['count']}")
 print(f"Total unique subjects: {len(result_4['unique_subjects'])}")
 
-print("\n" + "="*70)
-print("TESTING ENDPOINT 3: GET /subject-risk/{subject_id}")
-print("="*70)
+print("\n")
+print("Testing endpoint 3: GET /subject-risk/{subject_id}")
 
 # Test Case 1: Example from exercise
 print("\nTest 1: Subject '01-701-1015'")
@@ -181,6 +165,3 @@ if not df.empty:
     for category, count in risk_distribution.items():
         print(f"  {category}: {count}")
 
-print("\n" + "="*70)
-print("ALL TESTS COMPLETED")
-print("="*70)

@@ -290,114 +290,116 @@ All output files are saved to the `question_4_tlg/` directory:
 
 RESTful API for clinical data access and manipulation built with FastAPI.
 
-## Project Overview
+# Clinical Data Analysis Project
 
-The project consists of five tasks focused on clinical trial data analysis, specifically working with adverse event (AE) data from the CDISC SDTM standard.
+This repository contains my solutions to a series of clinical data analysis exercises, working with adverse event data from clinical trials using the CDISC SDTM standard.
+
+## What's Inside
+
+The project covers five different tasks, each focusing on a different aspect of clinical data analysis - from data export and cleaning through to building a working API.
 
 ## Repository Structure
 
 ```bash
 .
-├── main.py                    # FastAPI application (production code)
-├── dev_test_code.py           # Development and testing code
-├── adae.csv                   # Clinical trial adverse event dataset
-└── README.md                  # Details on the exercise and solutions
+├── exercise5/                 # Task 5: Clinical Data API
+  │   ├── main.py               # The main API application
+│   ├── dev_test_code.py      # Testing and development code
+│   ├── adae.csv              # Adverse event dataset
+│   └── README.md             # Detailed API documentation
+└── README.md                 # This file
 ```
 
-## Tasks Completed
+## The Tasks
 
 ### Task 1: Data Export (R)
-Exported the adverse events dataset (`ae`) from the `pharmaversesdtm` package to CSV format for use in subsequent Python tasks.
+Exported the adverse events dataset from the `pharmaversesdtm` package to CSV format so I could use it in Python for the later tasks.
 
 ### Task 2: Data Cleaning and Transformation (Python/Pandas)
-- Loaded and cleaned the adverse event dataset
-- Filtered records for subjects with at least one severe adverse event
-- Created summary statistics by treatment arm
-- Exported cleaned data for further analysis
+Cleaned up the adverse event data, filtered for severe events, and created summary statistics grouped by treatment arm.
 
 ### Task 3: Data Visualisation (Python/Matplotlib or Plotly)
-Created visualisations to explore adverse event patterns:
-- Distribution of adverse event severity across treatment arms
-- Time-to-event analysis
-- Frequency of adverse events by system organ class
+Created visualisations to explore patterns in the data - looking at severity distributions across treatment groups, time-to-event analysis, and frequency by system organ class.
 
 ### Task 4: Statistical Analysis (Python/SciPy or Statsmodels)
-Performed statistical tests to compare adverse event rates between treatment groups:
-- Chi-square tests for categorical variables
-- Survival analysis for time-to-event data
-- Generated summary reports with p-values and confidence intervals
+Ran statistical tests to compare adverse event rates between treatment groups, including chi-square tests and survival analysis.
 
 ### Task 5: Clinical Data API (FastAPI)
-Built a RESTful API with three endpoints:
+Built a REST API with three endpoints:
+  
+1. **GET `/`** - Simple welcome message to confirm the API is running
+2. **POST `/ae-query`** - Filter adverse events by severity and treatment arm
+3. **GET `/subject-risk/{subject_id}`** - Calculate a safety risk score for individual patients
 
-1. **GET `/`** - Welcome message confirming API status
-2. **POST `/ae-query`** - Dynamic filtering of adverse events by severity and treatment arm
-3. **GET `/subject-risk/{subject_id}`** - Calculate patient safety risk scores based on AE severity
+The API includes proper error handling and comes with interactive documentation through Swagger UI.
 
-**Key Features:**
-- Dynamic cohort analysis with flexible filtering
-- Risk stratification algorithm (Low/Medium/High categories)
-- Comprehensive error handling with HTTP status codes
-- Interactive API documentation via Swagger UI
+## What Each File Does
 
-## Code Organisation
+**main.py** is the production-ready API code - it's what you actually run to start the server.
 
-### main.py
-Clean, production-ready code containing:
-- FastAPI application setup
-- All three API endpoints
-- Data loading and validation
-- Complete documentation
+**dev_test_code.py** contains all my test cases and development experiments. It's useful for checking everything works but isn't needed to run the API.
 
-This file is designed to be run directly for deployment.
+## Tech Stack
 
-### dev_test_code.py
-Development and testing code containing:
-- All test cases for each endpoint
-- Exploratory data analysis
-- Debugging utilities
-- Comprehensive test coverage
-
-Use this file to verify functionality and experiment with new features.
-
-## Technologies Used
-
-- **R**: Data export and initial processing
-- **Python 3.8+**: Core programming language
-- **Pandas**: Data manipulation and analysis
-- **FastAPI**: RESTful API framework
-- **Uvicorn**: ASGI server for running the API
-- **Pydantic**: Data validation and settings management
-- **Matplotlib/Plotly**: Data visualisation
-- **SciPy/Statsmodels**: Statistical analysis
+- **R** for initial data export
+- **Python 3.8+** as the main language
+- **Pandas** for data manipulation
+- **FastAPI** for the REST API
+- **Uvicorn** to run the server
+- **Pydantic** for data validation
 
 ## Getting Started
 
-### Prerequisites
+### What You'll Need
 
-```bash
-pip install pandas fastapi uvicorn pydantic matplotlib scipy statsmodels
+- Python 3.8 or higher installed
+- Git to clone the repository
+
+### Setting Up
+
+First, clone the repository and navigate to the API folder:
+  
+  ```bash
+git clone https://github.com/OrtensiaV/technical-interview-april-2026
+cd technical-interview-april-2026/question_5
+```
+
+Then install the required packages:
+  
+  ```bash
+pip install fastapi uvicorn pandas pydantic
 ```
 
 ### Running the API
 
-```bash
+Start the server with:
+  
+  ```bash
 uvicorn main:app --reload
 ```
 
-Access the interactive API documentation at `http://localhost:8000/docs`
+You'll see some output confirming the server has started. The `--reload` flag means the server will automatically restart when you make changes to the code.
 
-### Running Tests
+### Using the API
 
-```bash
+Once it's running, open your browser and go to:
+  
+- **`http://localhost:8000/docs`** for the interactive documentation (this is the easiest way to test it)
+- **`http://localhost:8000/`** to see the welcome message
+
+The interactive docs let you try out each endpoint directly in your browser - just click "Try it out", enter your parameters, and hit "Execute".
+
+### Running the Tests
+
+If you want to run all the test cases:
+  
+  ```bash
 python dev_test_code.py
 ```
 
 ## Data Source
 
-The adverse event data is sourced from the `pharmaversesdtm` R package, which provides CDISC SDTM-compliant clinical trial datasets for educational and demonstration purposes.
-
-```
+The adverse event data comes from the `pharmaversesdtm` R package, which provides CDISC-compliant clinical trial datasets for educational purposes.
 
 ## Question 6: GenAI Clinical Data Assistant
 

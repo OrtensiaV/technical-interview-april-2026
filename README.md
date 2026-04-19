@@ -191,12 +191,98 @@ The script will:
 
 The final ADSL dataset contains all standard DM variables plus the derived variables listed above, ready for use in downstream analysis datasets and statistical analyses.
 
-
 ## Question 4: TLG - Adverse Events Reporting
 
-**Location**: `question_4/`
+**Location**: `question_4_tlg/`
 
-Tables, Listings, and Graphs for adverse events reporting following regulatory standards.
+# Question 4: TLG - Adverse Events Reporting
+
+## Overview
+
+This section creates Tables, Listings, and Graphs (TLGs) for adverse events summary using the `pharmaverseadam::adae` and `pharmaverseadam::adsl` datasets. 
+
+## Objectives
+
+- Generate a summary table of treatment-emergent adverse events (TEAEs) by system organ class
+- Visualise adverse event severity distribution across treatment arms
+- Identify and display the top 10 most frequent adverse events with confidence intervals
+- Produce a detailed listing of all treatment-emergent adverse events
+
+## Scripts
+
+### 1. `01_create_ae_summary_table.R`
+
+**Purpose**: Creates a hierarchical summary table of treatment-emergent adverse events organised by System Organ Class (SOC) and Adverse Event Decoded Term (AEDECOD).
+
+**Key Features**:
+- Filters for treatment-emergent events (`TRTEMFL == "Y"`)
+- Displays event counts and percentages by treatment arm (`ACTARM`)
+- Includes an overall summary row for any serious adverse event
+- Uses subject-level denominators from `adsl` for accurate percentage calculations
+
+**Output**: `ae_summary_table.html`
+
+### 2. `02_create_visualizations.R`
+
+**Purpose**: Generates two visualisations to support adverse event analysis.
+
+**Plot 1 - AE Severity Distribution**:
+- **Type**: Stacked bar chart
+- **Variables**: Treatment arm (x-axis), count of AEs (y-axis), severity/intensity (fill)
+- **Output**: `ae_severity_distribution_by_treatment.png`
+
+**Plot 2 - Top 10 Most Frequent AEs**:
+- **Type**: Forest plot with error bars
+- **Variables**: Percentage of patients experiencing each AE with 95% confidence intervals
+- **Calculation**: Uses binomial distribution for CI estimation (`qbinom`)
+- **Sample Size**: 225 subjects
+- **Output**: `top_10_aes.png`
+
+### 3. `03_create_listings.R`
+
+**Purpose**: Produces a detailed patient-level listing of all treatment-emergent adverse events.
+
+**Included Variables**:
+- Subject ID (`USUBJID`)
+- Treatment arm (`ACTARM`)
+- Adverse event term (`AETERM`)
+- Severity (`AESEV`)
+- Relationship to study drug (`AEREL`)
+- Start and end dates (`AESTDTC`, `AEENDTC`)
+
+**Sorting**: By subject ID and event start date
+
+**Output**: `ae_listings.html`
+
+## Dependencies
+
+``` r
+library(dplyr)
+library(pharmaverseadam)
+library(gtsummary)
+library(gtreg)
+library(ggplot2)
+library(gt)
+```
+
+## Usage
+
+Execute the scripts in numerical order:
+
+``` r
+source("question_4_tlg/01_create_ae_summary_table.R")
+source("question_4_tlg/02_create_visualizations.R")
+source("question_4_tlg/03_create_listings.R")
+```
+
+## Outputs
+
+All output files are saved to the `question_4_tlg/` directory:
+
+- `ae_summary_table.html` - Hierarchical summary table
+- `ae_severity_distribution_by_treatment.png` - Severity distribution visualisation
+- `top_10_aes.png` - Top 10 AEs with confidence intervals
+- `ae_listings.html` - Detailed patient-level listing
 
 ## Question 5: Clinical Data API (FastAPI)
 

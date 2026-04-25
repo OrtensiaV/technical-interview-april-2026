@@ -213,7 +213,6 @@ A RESTful API built with FastAPI for querying and analysing clinical trial adver
 - Dynamic filtering of adverse events by severity and treatment arm
 - Patient risk score calculation based on adverse event severity
 - RESTful API design with comprehensive error handling
-- Interactive API documentation via Swagger UI
 
 ### Endpoints
 

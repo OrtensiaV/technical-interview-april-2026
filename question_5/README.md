@@ -4,18 +4,18 @@ A REST API for querying and analysing adverse event data from clinical trials, b
 
 ## What It Does
 
-The API lets you filter adverse events by severity and treatment group, and calculate safety risk scores for individual patients. It is designed to be simple to use whilst handling errors properly.
+The API lets you filter adverse events by severity and treatment group, and calculate safety risk scores for individual patients.
 
 ## The Files
 
-**main.py** contains the actual API - this is what you run.
+**main.py** contains the actual API to run.
 
-**dev_test_code.py** has all the test cases I used during development. You can run it to verify everything works, but it is not required for the API itself.
+**dev_test_code.py** has all the test cases used during development. It can be run to verify everything works, but it is not required for the API itself.
 
 ## What You'll Need
 
 - Python 3.8 or newer
-- A few Python packages (FastAPI, Uvicorn, Pandas, Pydantic)
+- Some Python packages (FastAPI, Uvicorn, Pandas, Pydantic)
 
 ## Getting Set Up
 
@@ -40,7 +40,7 @@ Make sure these files are in the folder:
 
 ## Running It
 
-Start the server from the `exercise5` folder:
+Start the server from the `question_5` folder:
   
   ```bash
 uvicorn main:app --reload
@@ -52,8 +52,6 @@ INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
 INFO:     Started reloader process
 INFO:     Application startup complete.
 ```
-
-The `--reload` flag is handy during development - it automatically restarts the server when you save changes.
 
 To stop the server, just press `CTRL+C` in the terminal.
 

@@ -1,6 +1,6 @@
 # Clinical Programming Assessment Portfolio
 
-Comprehensive solutions demonstrating clinical data programming expertise across R and Python ecosystems, covering regulatory standards, data engineering, and modern AI applications.
+Comprehensive solutions demonstrating clinical data programming expertise across R and Python, covering regulatory standards, data engineering, and modern AI applications.
 
 ## Overview
 
@@ -87,7 +87,7 @@ Creation of an SDTM Disposition (DS) domain dataset from raw clinical trial data
 
 The script utilises `{sdtm.oak}` functions including:
   
-  - `assign_no_ct()`: Direct variable assignments without controlled terminology
+- `assign_no_ct()`: Direct variable assignments without controlled terminology
 - `assign_ct()`: Variable assignments with controlled terminology mappings
 - `hardcode_no_ct()`: Hardcoded value assignments for categorical variables
 - `condition_add()`: Conditional filtering based on business rules
@@ -283,7 +283,7 @@ An AI-powered assistant that translates natural language questions into structur
 
 The solution consists of a `ClinicalTrialDataAgent` class with two operational modes:
   
-**OpenAI Mode**: Uses GPT-3.5-turbo to parse natural language queries. The model receives a schema description and returns structured JSON.
+**OpenAI Mode**: Uses GPT-3.5-turbo to parse natural language queries.
 
 **Mock Mode**: Rule-based parser using keyword matching for environments without API access.
 
@@ -337,4 +337,4 @@ MIT
 
 ---
   
-  *Last updated: 19 April 2026*
+  *Last updated: 25 April 2026*

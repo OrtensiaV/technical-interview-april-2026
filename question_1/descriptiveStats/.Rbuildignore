@@ -1,3 +1,5 @@
 ^descriptiveStats\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+^question_1\.R$
+^\.DS_Stores$
